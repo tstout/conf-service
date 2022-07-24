@@ -1,0 +1,2 @@
+# conf-service
+Configuration Storage
