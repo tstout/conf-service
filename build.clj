@@ -20,7 +20,7 @@
   (copy-dir {:target-dir class-dir, :src-dirs ["src" "resources"]})
   (compile-clj {:basis basis, :class-dir class-dir, :src-dirs ["src"]})
   (uber
-    {:basis basis,
-     :uber-file uber-file,
-     :class-dir class-dir,
-     :main (symbol "conf-service.core")}))
+   {:basis basis,
+    :uber-file uber-file,
+    :class-dir class-dir,
+    :main (symbol "conf-service.core")}))
