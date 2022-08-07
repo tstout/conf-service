@@ -1,7 +1,7 @@
 {:deps {com.github.tstout/sys-loader
         {:git/url "https://github.com/tstout/sys-loader"
-         :git/tag "v1.1.1"
-         :git/sha "7e9baa3"}
+         :git/tag "v1.1.2"
+         :git/sha "aafa044"}
         com.github.tstout/ring-module
         {:git/url "https://github.com/tstout/ring-module"
          :git/tag "v1.0.0"
@@ -14,7 +14,8 @@
    {io.github.clojure/tools.build
     {:git/tag "v0.8.1"
      :git/sha "7d40500"}}
-   :ns-default build},
+   :ns-default build
+   :extra-paths ["resources"]},
   :dev {:extra-paths ["dev"]},
   :test
   {:extra-paths ["test" "test/resources"],
