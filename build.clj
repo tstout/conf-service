@@ -21,6 +21,7 @@
   (compile-clj {:basis basis, :class-dir class-dir, :src-dirs ["src"]})
   (uber
    {:basis basis,
-    :uber-file uber-file,
-    :class-dir class-dir,
-    :main (symbol "conf-service.core")}))
+    :uber-file uber-file
+    :class-dir class-dir
+    :conflict-handlers {"module.edn" :error}
+    :main 'conf-service.core}))

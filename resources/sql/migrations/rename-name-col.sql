@@ -1,0 +1,2 @@
+ALTER TABLE conf.name ALTER COLUMN name RENAME TO PATH
+ 
