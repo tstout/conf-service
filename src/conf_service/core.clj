@@ -41,8 +41,12 @@
   (init @sys/sys-state)
 
 
-  (-> @sys/sys-state 
-      :ring-module 
+  (-> @sys/sys-state
+      :ring-module
       bean)
+
+
+  #'comment
+
   ;;
   )
