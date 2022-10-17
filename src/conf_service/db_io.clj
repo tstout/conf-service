@@ -1,6 +1,7 @@
 (ns conf-service.db-io
   (:require [next.jdbc :as jdbc]
             [next.jdbc.sql :as sql]
+            [next.jdbc.result-set :as rs]
             [clojure.java.io :as io]
             [taoensso.timbre :as log]))
 
@@ -74,6 +75,10 @@
                       name
                       description]))))
 
+
+;; Note - jdbc.next has many options regarding the shape of result sets.
+;; currently using as-unqualified-lower-map as this suits my taste at the
+;; moment. 
 (defn select-account
   "Fetch an account by name."
   [opts]
@@ -82,7 +87,8 @@
     (with-open [conn (jdbc/get-connection ds)]
       (jdbc/execute! conn
                      [(sql-text :select-account)
-                      path]))))
+                      path]
+                     {:builder-fn rs/as-unqualified-lower-maps}))))
 
 (defn new-named-account 
   "Create a new account with an associated name entry defining a 
