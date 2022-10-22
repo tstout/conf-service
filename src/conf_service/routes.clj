@@ -1,17 +1,15 @@
 (ns conf-service.routes
-  (:require [ring-module.router :refer [router register-uri-handler reset-registry!]]
+  (:require [ring-module.router :refer [router
+                                        register-uri-handler
+                                        reset-registry!]]
             [clojure.string :refer [split starts-with?]]
             [sys-loader.core :refer [sys-state]]
             [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [ring.util.response :refer [bad-request
-                                        resource-response
-                                        response
-                                        created]]
-            [conf-service.db-io :refer [upsert-account
-                                        upsert-tag
-                                        next-seq-val
-                                        select-account
+            [ring.util.response :refer [response
+                                        created
+                                        not-found]]
+            [conf-service.db-io :refer [select-account
                                         new-named-account]]))
 
 ;; TODO - referencing global state here is a little ugly.
@@ -24,16 +22,20 @@
                           (when (starts-with? uri path)
                             path))))
 
+;; TODO - the name for looking up a config entity is 
+;; currently simply the last path param of the URI.
+;; Consider other options here.
 (defn extract-path [uri]
   (last (split uri #"/")))
 
 (defmethod router ["/v1/config/account" :get] [request]
-  (let [{:keys [uri query-string]} request]
-    (-> {:ds @data-source
-         :path (extract-path uri)}
-        select-account
-        str
-        response)))
+  (let [{:keys [uri]} request
+        account  (-> {:ds @data-source
+                      :path (extract-path uri)}
+                     select-account)]
+    (if (empty? account)
+      (not-found nil)
+      (-> account str response))))
 
 (defn mk-account [body]
   (->> body
@@ -49,28 +51,25 @@
          (str "account/")
          created)))
 
-(defn mk-reader [x]
-  (-> x
-      char-array
-      io/reader))
+;; (defn mk-reader [x]
+;;   (-> x
+;;       char-array
+;;       io/reader))
 
 
 (comment
-  *e
+  *e 
   (extract-path "/v1/config/account/a-b-c")
   (reset-registry!)
   @data-source
   data-source
+
+  (not-found nil)
 
   (-> "{:a 1 :b 2}"
       char-array
       io/reader
       slurp
       edn/read-string)
-
-
-  (-> "{:}")
-
-
   ;;
   )

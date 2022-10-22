@@ -34,8 +34,7 @@
     (migrate #'rename-col)))
 
 
-(comment
-  (System/getenv "CONCEAL_KEY")
+(comment 
   (pprint @sys/sys-state)
   (prn-modules)
   (init @sys/sys-state)
