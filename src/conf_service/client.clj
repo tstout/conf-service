@@ -3,7 +3,6 @@
   (:import [java.net.http
             HttpClient
             HttpRequest
-            HttpResponse
             HttpResponse$BodyHandlers
             HttpRequest$BodyPublishers]
            [java.net URI]))
@@ -26,16 +25,30 @@
       (.setHeader "User-Agent" "Java 11+")
       .build))
 
-(defn http-send [req]
+(defn http-tx
+  "Transmit an http request."
+  [req]
   (-> (HttpClient/newHttpClient)
       (.send req (HttpResponse$BodyHandlers/ofString))))
 
 (defn mk-account [uri body]
   (-> uri
       (post-request body)
-      http-send))
+      http-tx))
+
+(defn fetch-account [uri]
+  (-> uri
+      get-request
+      http-tx
+      .body
+      edn/read-string))
 
 (comment
+  *e
+  (fetch-account "http://localhost:8080/v1/config/account/a.b.c")
+
+  (time (fetch-account "http://localhost:8080/v1/config/account/a.b.c"))
+
   (mk-account
    "http://localhost:8080/v1/config/account"
    {:name "a.b.c.e"
@@ -44,11 +57,5 @@
     :user "foo2"
     :pass "bar2"})
 
-  (get-request "http://localhost:8080/v1/config/account/banking.boa.online")
-
-  (time (-> "http://localhost:8080/v1/config/account/banking.boa.online"
-            http-get
-            .body
-            edn/read-string))
   ;;
   )

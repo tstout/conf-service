@@ -77,10 +77,10 @@
 
 
 ;; Note - jdbc.next has many options regarding the shape of result sets.
-;; currently using as-unqualified-lower-map as this suits my taste at the
+;; Currently using as-unqualified-lower-map as this suits my taste at the
 ;; moment. 
 (defn select-account
-  "Fetch an account by name."
+  "Fetch an account by path."
   [opts]
   {:pre [(map? opts)]}
   (let [{:keys [ds path]} opts]
@@ -90,7 +90,7 @@
                       path]
                      {:builder-fn rs/as-unqualified-lower-maps}))))
 
-(defn new-named-account 
+(defn new-named-account
   "Create a new account with an associated name entry defining a 
    path which can be used to lookup the account."
   [opts]
@@ -124,6 +124,11 @@
                       :pass "bar2"})
 
   data-source
+
+  (bean data-source)
+
+  (select-account {:ds data-source :path "a.b.c"})
+
 
   (-> (select-account {:ds data-source :path "a.b.c"})
       str)

@@ -51,12 +51,6 @@
          (str "account/")
          created)))
 
-;; (defn mk-reader [x]
-;;   (-> x
-;;       char-array
-;;       io/reader))
-
-
 (comment
   *e 
   (extract-path "/v1/config/account/a-b-c")
@@ -71,5 +65,12 @@
       io/reader
       slurp
       edn/read-string)
+  
+(time (-> "{:a 1 :b 2}"
+          char-array
+          io/reader
+          slurp
+          edn/read-string))
+
   ;;
   )
