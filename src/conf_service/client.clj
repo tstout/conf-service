@@ -1,5 +1,6 @@
 (ns conf-service.client
-  (:require [clojure.edn :as edn])
+  (:require [clojure.edn :as edn]
+            [taoensso.timbre :as log])
   (:import [java.net.http
             HttpClient
             HttpRequest
@@ -37,6 +38,7 @@
       http-tx))
 
 (defn fetch-account [uri]
+  (log/infof "fetch-acccount %s" uri)
   (-> uri
       get-request
       http-tx
