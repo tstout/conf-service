@@ -8,10 +8,6 @@
             HttpRequest$BodyPublishers]
            [java.net URI]))
 
-;; Java 11 http client interop here is a bit unsightly, but I did not want to 
-;; have a dependency on an external lib for such basic http functionality when 
-;; JRE now provides it natively.
-
 (defn get-request [uri]
   (-> (HttpRequest/newBuilder)
       .GET
@@ -32,7 +28,7 @@
   (-> (HttpClient/newHttpClient)
       (.send req (HttpResponse$BodyHandlers/ofString))))
 
-(defn mk-account [uri body]
+(defn mk-account [body uri]
   (-> uri
       (post-request body)
       http-tx))
@@ -52,12 +48,12 @@
   (time (fetch-account "http://localhost:8080/v1/config/account/a.b.c"))
 
   (mk-account
-   "http://localhost:8080/v1/config/account"
    {:name "a.b.c.e"
     :path "a.b.c"
     :description "test account"
     :user "foo2"
-    :pass "bar2"})
+    :pass "bar2"}
+   "http://localhost:8080/v1/config/account")
 
   ;;
   )

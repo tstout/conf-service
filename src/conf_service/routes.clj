@@ -17,10 +17,11 @@
   (delay
     (-> @sys-state :sys/db :data-source)))
 
-(register-uri-handler (fn [uri]
-                        (let [path "/v1/config/account"]
-                          (when (starts-with? uri path)
-                            path))))
+(defn config-routes []
+  (register-uri-handler (fn [uri]
+                          (let [path "/v1/config/account"]
+                            (when (starts-with? uri path)
+                              path)))))
 
 ;; TODO - the name for looking up a config entity is 
 ;; currently simply the last path param of the URI.
@@ -52,7 +53,7 @@
          created)))
 
 (comment
-  *e 
+  *e
   (extract-path "/v1/config/account/a-b-c")
   (reset-registry!)
   @data-source
@@ -65,12 +66,12 @@
       io/reader
       slurp
       edn/read-string)
-  
-(time (-> "{:a 1 :b 2}"
-          char-array
-          io/reader
-          slurp
-          edn/read-string))
+
+  (time (-> "{:a 1 :b 2}"
+            char-array
+            io/reader
+            slurp
+            edn/read-string))
 
   ;;
   )

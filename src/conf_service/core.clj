@@ -1,10 +1,13 @@
 (ns conf-service.core
   (:require [clojure.tools.cli :refer [parse-opts]]
-            [clojure.pprint :refer [print-table]]
+            [clojure.pprint :refer [print-table pprint]]
             [sys-loader.core :as sys]
+            [conf-service.routes :refer [config-routes]]
             [clojure.string :as string]
+            [conf-service.crypto :refer [encrypt-account decrypt-account]]
             [taoensso.timbre :as log]
-            [conf-service.client :refer [mk-account fetch-account]])
+            [conf-service.client :refer [mk-account fetch-account]]
+            [clojure.edn :as edn])
   (:gen-class))
 
 (defn prn-modules
@@ -68,20 +71,19 @@
   (println msg)
   (System/exit status))
 
-
-(defn add-account [options]
+(defn add-account [options] 
   (let [{:keys [encrypt url account]} options]
-    (mk-account (str url "account") account)))
+    (-> account
+        edn/read-string
+        (encrypt-account encrypt)
+        (mk-account (str url "account")))))
 
 (defn load-account [options]
   (let [{:keys [decrypt url path]} options
-        account (fetch-account (str url "account/" path))]
-    (print-table account)))
+        accounts (fetch-account (str url "account/" path))]
+    (print-table (map #(decrypt-account % decrypt) accounts))))
 
-
-;; TODO - see if uberjar can work without this
 (defn -main [& args]
-  ;;(prn-modules)
   (let [{:keys [action options exit-message ok?]} (validate-args args)]
     (if exit-message
       (exit (if ok? 0 1) exit-message)
@@ -100,11 +102,15 @@
 (defn rename-col [run-ddl]
   (run-ddl "rename-name-col"))
 
-(defn init [state]
+(defn init
+  "The sys-module initialization fn. This configures the 
+   "
+  [state]
   (let [migrate (-> :sys/migrations state)]
     (migrate #'init-schema)
     (migrate #'add-name-tbl)
-    (migrate #'rename-col)))
+    (migrate #'rename-col)
+    (config-routes)))
 
 
 (comment
@@ -112,6 +118,7 @@
   (prn-modules)
   (init @sys/sys-state)
 
+  (fetch-account "http://localhost:8080/v1/config/account/a.b.c")
 
   (-main (into-array ["fetch" "-p" "a.b.c"]))
 
@@ -121,6 +128,13 @@
       :ring-module
       bean)
 
+
+  (add-account {:url "http://localhost:8080/v1/config/"
+                :account {:name "boa-chk"
+                          :path "bank.boa"
+                          :user "foo2"
+                          :pass "bar2"}
+                :encrypt true})
 
   (meta #'comment)
 
