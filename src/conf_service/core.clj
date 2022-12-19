@@ -10,12 +10,13 @@
             [clojure.edn :as edn])
   (:gen-class))
 
-(defn prn-modules
-  "Print modules from class path. Intended for repl debugging of classpath issues."
+
+(defn log-modules
+  "Log modules from class path. Intended for repl debugging of classpath issues."
   []
   (let [modules (.getResources (ClassLoader/getSystemClassLoader) "module.edn")]
     (while (.hasMoreElements modules)
-      (prn (.. modules nextElement)))))
+      (log/infof "sys-module: %s" (.. modules nextElement)))))
 
 (def cli-options
   [;; First three strings describe a short-option, long-option with optional
@@ -71,7 +72,7 @@
   (println msg)
   (System/exit status))
 
-(defn add-account [options] 
+(defn add-account [options]
   (let [{:keys [encrypt url account]} options]
     (-> account
         edn/read-string
@@ -88,7 +89,8 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (case action
-        "server" (sys/-main args)
+        "server" (do (sys/-main args)
+                     (log-modules))
         "add"    (add-account options)
         "fetch"  (load-account options)))))
 
@@ -103,19 +105,22 @@
   (run-ddl "rename-name-col"))
 
 (defn init
-  "The sys-module initialization fn. This configures the 
-   "
+  "The sys-module initialization fn. This configures the DB schema and
+   http routes."
   [state]
   (let [migrate (-> :sys/migrations state)]
-    (migrate #'init-schema)
-    (migrate #'add-name-tbl)
-    (migrate #'rename-col)
+    (doseq [ddl-fn [#'init-schema
+                    #'add-name-tbl
+                    #'rename-col]]
+      (migrate ddl-fn))
     (config-routes)))
-
 
 (comment
   (pprint @sys/sys-state)
-  (prn-modules)
+  (log-modules)
+
+  (meta #'add-name-tbl)
+
   (init @sys/sys-state)
 
   (fetch-account "http://localhost:8080/v1/config/account/a.b.c")
