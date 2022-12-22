@@ -2,6 +2,8 @@
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.pprint :refer [print-table pprint]]
             [sys-loader.core :as sys]
+            [clojure.spec.alpha :as s]
+            [conf-service.spec :as conf]
             [conf-service.routes :refer [config-routes]]
             [clojure.string :as string]
             [conf-service.crypto :refer [encrypt-account decrypt-account]]
@@ -73,11 +75,13 @@
   (System/exit status))
 
 (defn add-account [options]
-  (let [{:keys [encrypt url account]} options]
-    (-> account
-        edn/read-string
-        (encrypt-account encrypt)
-        (mk-account (str url "account")))))
+  (let [{:keys [encrypt url account]} options
+        acc (-> account edn/read-string)]
+    (if (s/valid? ::conf/account acc)
+      (-> acc
+          (encrypt-account encrypt)
+          (mk-account (str url "account")))
+      (println (s/explain ::conf/account acc)))))
 
 (defn load-account [options]
   (let [{:keys [decrypt url path]} options
@@ -116,6 +120,7 @@
     (config-routes)))
 
 (comment
+  *e
   (pprint @sys/sys-state)
   (log-modules)
 
@@ -140,6 +145,19 @@
                           :user "foo2"
                           :pass "bar2"}
                 :encrypt true})
+
+
+  (s/valid? ::conf/account {:name "boa-chk"
+                            :path "bank.boa"
+                            :user "foo2"
+                            :pass "bar2"})
+
+  (s/explain ::conf/account {:name "boa-chk"
+                             :path "bank.boa"
+                             :user "foo2"
+                             :pass "bar2"})
+
+  (namespace ::conf/account)
 
   (meta #'comment)
 
