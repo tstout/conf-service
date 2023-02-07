@@ -3,7 +3,7 @@
             [next.jdbc.sql :as sql]
             [next.jdbc.result-set :as rs]
             [clojure.java.io :as io]
-            [taoensso.timbre :as log]))
+            [clojure.tools.logging :as log]))
 
 (def sql-text
   "Load SQL text from resource. SQL resource file must exist at 
@@ -104,7 +104,7 @@
   (require '[sys-loader.core :refer [sys-state]])
   (def data-source (-> @sys-state :sys/db :data-source))
 
-  (clojure.pprint/pprint (bean data-source))
+  (clojure/pprint/pprint (bean data-source))
   @sys-state
   data-source
   (time

@@ -1,6 +1,6 @@
 (ns conf-service.crypto
   (:require [conceal.core :refer [reveal conceal mk-opts key-from-env]]
-            [taoensso.timbre :as log]))
+            [clojure.tools.logging :as log]))
 
 ;; See https://github.com/tstout/conceal for more info.
 

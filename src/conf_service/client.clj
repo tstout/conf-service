@@ -1,6 +1,6 @@
 (ns conf-service.client
   (:require [clojure.edn :as edn]
-            [taoensso.timbre :as log])
+            [clojure.tools.logging :as log])
   (:import [java.net.http
             HttpClient
             HttpRequest

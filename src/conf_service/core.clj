@@ -1,4 +1,5 @@
 (ns conf-service.core
+
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.pprint :refer [print-table pprint]]
             [sys-loader.core :as sys]
@@ -7,7 +8,7 @@
             [conf-service.routes :refer [config-routes]]
             [clojure.string :as string]
             [conf-service.crypto :refer [encrypt-account decrypt-account]]
-            [taoensso.timbre :as log]
+            [clojure.tools.logging :as log]
             [conf-service.client :refer [mk-account fetch-account]]
             [clojure.edn :as edn])
   (:gen-class))
