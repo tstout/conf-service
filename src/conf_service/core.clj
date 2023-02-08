@@ -103,8 +103,8 @@
   (run-ddl "init-schema")
   (run-ddl "name-table"))
 
-(defn add-name-tbl [run-ddl]
-  (run-ddl "name-table"))
+;; (defn add-name-tbl [run-ddl]
+;;   (run-ddl "name-table"))
 
 (defn rename-col [run-ddl]
   (run-ddl "rename-name-col"))
@@ -115,7 +115,6 @@
   [state]
   (let [migrate (-> :sys/migrations state)]
     (doseq [ddl-fn [#'init-schema
-                    #'add-name-tbl
                     #'rename-col]]
       (migrate ddl-fn))
     (config-routes)))
