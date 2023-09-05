@@ -101,10 +101,9 @@
 
 (comment
   *e
-  (require '[sys-loader.core :refer [sys-state]])
+  (require '[sys-loader.core :refer [sys-state]])`
   (def data-source (-> @sys-state :sys/db :data-source))
 
-  (clojure/pprint/pprint (bean data-source))
   @sys-state
   data-source
   (time
@@ -133,7 +132,9 @@
   (-> (select-account {:ds data-source :path "a.b.c"})
       str)
 
-  (time (-> (select-account {:ds data-source :path "a.b.c"}) first :ACCOUNT/USER_ID))
+  (time (-> (select-account {:ds data-source :path "a.b.c"}) 
+            first 
+            :ACCOUNT/USER_ID))
 
 
   (insert-name {:ds data-source :name "a.b.c" :id 64})
