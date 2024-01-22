@@ -1,0 +1,11 @@
+[Unit]
+Description=Config Service
+After=syslog.target
+
+[Service]
+ExecStart=/home/pi/src/conf-service/run.sh
+WorkingDirectory=/home/pi/
+User=pi
+
+[Install]
+WantedBy=multi-user.target

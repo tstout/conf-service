@@ -101,7 +101,7 @@
 
 (comment
   *e
-  (require '[sys-loader.core :refer [sys-state]])`
+  (require '[sys-loader.core :refer [sys-state]])
   (def data-source (-> @sys-state :sys/db :data-source))
 
   @sys-state
@@ -132,8 +132,8 @@
   (-> (select-account {:ds data-source :path "a.b.c"})
       str)
 
-  (time (-> (select-account {:ds data-source :path "a.b.c"}) 
-            first 
+  (time (-> (select-account {:ds data-source :path "a.b.c"})
+            first
             :ACCOUNT/USER_ID))
 
 
