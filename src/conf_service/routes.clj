@@ -3,7 +3,7 @@
                                         register-uri-handler
                                         reset-registry!]]
             [clojure.string :refer [split starts-with?]]
-            [sys-loader.core :refer [sys-state]]
+            [sys-loader.bootstrap :refer [sys-state]]
             [clojure.java.io :as io]
             [clojure.edn :as edn]
             [ring.util.response :refer [response

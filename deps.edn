@@ -1,11 +1,13 @@
 {:deps {com.github.tstout/sys-loader
+        ;;{:local/root "../sys-loader"}
         {:git/url "https://github.com/tstout/sys-loader"
-         :git/tag "v1.1.6"
-         :git/sha "0e5a165"}
+         :git/tag "v1.1.7"
+         :git/sha "4e1ce47"}
         com.github.tstout/ring-module
+        ;;{:local/root "../ring-module"}
         {:git/url "https://github.com/tstout/ring-module"
-         :git/tag "v1.0.3"
-         :git/sha "f9791bb"}
+         :git/tag "v1.0.4"
+         :git/sha "adcf7f4"}
         com.github.seancorfield/next.jdbc
         {:git/url "https://github.com/seancorfield/next-jdbc.git"
          :git/tag "v1.2.724"

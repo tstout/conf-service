@@ -2,6 +2,7 @@
 
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.pprint :refer [print-table pprint]]
+            [sys-loader.bootstrap :refer [sys-state]]
             [sys-loader.core :as sys]
             [clojure.spec.alpha :as s]
             [conf-service.spec :as conf]
@@ -14,12 +15,12 @@
   (:gen-class))
 
 
-(defn log-modules
-  "Log modules from class path. Intended for repl debugging of classpath issues."
-  []
-  (let [modules (.getResources (ClassLoader/getSystemClassLoader) "module.edn")]
-    (while (.hasMoreElements modules)
-      (log/infof "sys-module: %s" (.. modules nextElement)))))
+;; (defn log-modules
+;;   "Log modules from class path. Intended for repl debugging of classpath issues."
+;;   []
+;;   (let [modules (.getResources (ClassLoader/getSystemClassLoader) "module.edn")]
+;;     (while (.hasMoreElements modules)
+;;       (log/infof "sys-module: %s" (.. modules nextElement)))))
 
 (def cli-options
   [;; First three strings describe a short-option, long-option with optional
@@ -94,8 +95,7 @@
     (if exit-message
       (exit (if ok? 0 1) exit-message)
       (case action
-        "server" (do (sys/-main args)
-                     (log-modules))
+        "server" (sys/-main args)
         "add"    (add-account options)
         "fetch"  (load-account options)))))
 
@@ -121,12 +121,12 @@
 
 (comment
   *e
-  (pprint @sys/sys-state)
+  (pprint @sys-state)
   (log-modules)
 
   (meta #'add-name-tbl)
 
-  (init @sys/sys-state)
+  (init @sys-state)
 
   (fetch-account "http://localhost:8080/v1/config/account/a.b.c")
 
@@ -134,7 +134,7 @@
 
   (type (into-array ["a" "b" "c"]))
 
-  (-> @sys/sys-state
+  (-> @sys-state
       :ring-module
       bean)
 

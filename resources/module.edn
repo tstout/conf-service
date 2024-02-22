@@ -1,5 +1,5 @@
 
 [{:sys/description "config service"
   :sys/name        :config/service
-  :sys/deps        [:sys/logging :sys/migrations :sys/db]
+  :sys/deps        []
   :sys/init        conf-service.core/init}]
