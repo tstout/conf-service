@@ -96,8 +96,10 @@
       (exit (if ok? 0 1) exit-message)
       (case action
         "server" (sys/-main args)
-        "add"    (add-account options)
-        "fetch"  (load-account options)))))
+        "add"    (do (add-account options)
+                     (System/exit 0))
+        "fetch"  (do (load-account options)
+                     (System/exit 0))))))
 
 (defn init-schema [run-ddl]
   (run-ddl "init-schema")
