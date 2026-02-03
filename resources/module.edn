@@ -2,4 +2,5 @@
 [{:sys/description "config service"
   :sys/name        :config/service
   :sys/deps        []
-  :sys/init        conf-service.core/init}]
+  :sys/init        conf-service.core/init
+  :sys/pre-init    conf-service.core/pre-init}]

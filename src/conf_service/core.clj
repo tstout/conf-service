@@ -111,6 +111,10 @@
 (defn rename-col [run-ddl]
   (run-ddl "rename-name-col"))
 
+(defn pre-init [_]
+  (log/info "**** conf-service.core/pre-init called ****")
+  {})
+
 (defn init
   "The sys-module initialization fn. This configures the DB schema and
    http routes."
@@ -124,6 +128,7 @@
 (comment
   *e
   (pprint @sys-state)
+  
   (log-modules)
 
   (meta #'add-name-tbl)
