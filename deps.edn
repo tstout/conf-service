@@ -1,8 +1,10 @@
-{:deps {com.github.tstout/sys-loader
-        ;;{:local/root "../sys-loader"}
+{:deps {com.github.tstout/http-jdk
+        {:local/root "../http-jdk"}
+        com.github.tstout/sys-loader
+        ;;{:local/root "../sys-loader"} 
         {:git/url "https://github.com/tstout/sys-loader"
-         :git/tag "v1.1.10"
-         :git/sha "88a0954"}
+         :git/tag "v1.1.11"
+         :git/sha "5498a2c"} 
         com.github.tstout/ring-module
         ;; {:local/root "../ring-module"}
         {:git/url "https://github.com/tstout/ring-module"

@@ -3,9 +3,11 @@
                                         register-uri-handler
                                         reset-registry!]]
             [clojure.string :refer [split starts-with?]]
+            [clojure.tools.logging :as log]
             [sys-loader.bootstrap :refer [sys-state]]
             [clojure.java.io :as io]
             [clojure.edn :as edn]
+            [http-jdk.server :refer [mk-http-server]]
             [ring.util.response :refer [response
                                         created
                                         not-found]]
@@ -17,11 +19,58 @@
   (delay
     (-> @sys-state :sys/db :data-source)))
 
+(defn mk-account [body]
+  (->> body 
+       edn/read-string
+       (merge {:ds @data-source})
+       new-named-account))
+
+(defn account-get [req]
+  (let [{:keys [path-params]} req
+        account  (-> {:ds @data-source
+                      :path (:acct-name path-params)}
+                     select-account)]
+    (if (empty? account)
+      {:status 404
+       :body   (format "account-not-found for req %s" (str req))
+       :headers ""}
+      {:status 200
+       :body   (str account)
+       :headers ""})))
+
+(defn account-post [req]
+  (let [{:keys [body]} req
+        account        (->> body
+                            mk-account
+                            (str "account/")
+                            created)] 
+    (if (empty? account)
+      {:status  404
+       :body    nil
+       :headers ""}
+      {:status  200
+       :body    account
+       :headers ""})))
+
 (defn config-routes []
-  (register-uri-handler (fn [uri]
+  #_(register-uri-handler (fn [uri]
                           (let [path "/v1/config/account"]
                             (when (starts-with? uri path)
-                              path)))))
+                              path))))
+  (let [server (mk-http-server 
+                :port 8081 
+                :host "0.0.0.0")]
+    ;; add routes
+    (server :add-route 
+            "/v1/config/account"
+            (fn [req]
+              (let [{:keys [method body]} req]
+                (case method
+                  "GET" (account-get req)
+                  "POST" (account-post body))))
+            "v1/config/account/{acct-name}")
+    (server :start)
+    {:http-server server}))
 
 ;; TODO - the name for looking up a config entity is 
 ;; currently simply the last path param of the URI.
@@ -37,13 +86,6 @@
     (if (empty? account)
       (not-found nil)
       (-> account str response))))
-
-(defn mk-account [body]
-  (->> body
-       slurp
-       edn/read-string
-       (merge {:ds @data-source})
-       new-named-account))
 
 (defmethod router ["/v1/config/account" :post] [request]
   (let [{:keys [body]} request]
