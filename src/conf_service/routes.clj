@@ -22,6 +22,7 @@
 (defn mk-account [body]
   (->> body 
        edn/read-string
+       #_(tap-step :mk-account)
        (merge {:ds @data-source})
        new-named-account))
 
@@ -49,7 +50,7 @@
        :body    nil
        :headers ""}
       {:status  200
-       :body    account
+       :body    (str account)
        :headers ""})))
 
 (defn config-routes []
@@ -67,7 +68,8 @@
               (let [{:keys [method body]} req]
                 (case method
                   "GET" (account-get req)
-                  "POST" (account-post body))))
+                  "POST" (do #_(tap-step :account-post req)
+                             (-> req account-post)))))
             "v1/config/account/{acct-name}")
     (server :start)
     {:http-server server}))
@@ -95,12 +97,14 @@
          created)))
 
 (comment
-  *e
+  *e 
+  @sys-state
+
   (extract-path "/v1/config/account/a-b-c")
   (reset-registry!)
   @data-source
   data-source
-
+  
   (not-found nil)
 
   (-> "{:a 1 :b 2}"

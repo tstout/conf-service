@@ -1,4 +1,5 @@
-(ns user)
+(ns user
+  (:require [clojure.pprint :refer [pprint]]))
 ;; Add your REPL customizations here.
 
 
@@ -16,3 +17,15 @@
   (when-let [orig (:trace/orig (meta v))]
     (alter-var-root v (constantly orig))
     (alter-meta! v dissoc :trace/orig)))
+
+(defn tap-step 
+  "Use with thread last macro to tap a value for inspection. Returns the value."
+  [label coll]
+  (tap> {label coll})
+  coll)
+
+(intern 'clojure.core 'tap-step tap-step)
+
+(add-tap (fn [x] (pprint x)))
+
+(prn "user.clj loaded")
