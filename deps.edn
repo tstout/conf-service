@@ -1,35 +1,30 @@
-{:deps {com.github.tstout/http-jdk
-        {:local/root "../http-jdk"}
-        com.github.tstout/sys-loader
+{:deps  {com.github.tstout/http-jdk
+         {:local/root "../http-jdk"}
+         com.github.tstout/sys-loader
         ;;{:local/root "../sys-loader"} 
-        {:git/url "https://github.com/tstout/sys-loader"
-         :git/tag "v1.1.11"
-         :git/sha "5498a2c"} 
-        com.github.tstout/ring-module
-        ;; {:local/root "../ring-module"}
-        {:git/url "https://github.com/tstout/ring-module"
-         :git/tag "v1.0.5"
-         :git/sha "831d80f"}
-        com.github.seancorfield/next.jdbc
-        {:git/url "https://github.com/seancorfield/next-jdbc.git"
-         :git/tag "v1.2.724"
-         :git/sha "de432a2"}
-        camel-snake-kebab/camel-snake-kebab       
-        {:git/url "https://github.com/clj-commons/camel-snake-kebab.git"
-         :git/tag "version-0.4.2" 
-         :git/sha "f4d963f"}
-        org.clojure/tools.cli
-        {:mvn/version "0.3.5"}
-        org.clojure/tools.logging
-        {:mvn/version "1.2.4"}
-        com.github.tstout/conceal
-        {:git/url "https://github.com/tstout/conceal"
-         :git/tag "v1.0.0"
-         :git/sha "e9ab405"}
-        #_com.fzakaria/slf4j-timbre
-        #_{:git/url "https://github.com/fzakaria/slf4j-timbre"
-           :git/tag "0.3.21"
-           :git/sha "b5cac66"}}
+         {:git/url "https://github.com/tstout/sys-loader"
+          :git/tag "v1.1.11"
+          :git/sha "5498a2c"}
+         com.github.seancorfield/next.jdbc
+         {:git/url "https://github.com/seancorfield/next-jdbc.git"
+          :git/tag "v1.2.724"
+          :git/sha "de432a2"}
+         camel-snake-kebab/camel-snake-kebab       
+         {:git/url "https://github.com/clj-commons/camel-snake-kebab.git"
+          :git/tag "version-0.4.2" 
+          :git/sha "f4d963f"}
+         org.clojure/tools.cli
+         {:mvn/version "0.3.5"}
+         org.clojure/tools.logging
+         {:mvn/version "1.2.4"}
+         com.github.tstout/conceal
+         {:git/url "https://github.com/tstout/conceal"
+          :git/tag "v1.0.0"
+          :git/sha "e9ab405"}
+         #_com.fzakaria/slf4j-timbre
+         #_{:git/url "https://github.com/fzakaria/slf4j-timbre"
+            :git/tag "0.3.21"
+            :git/sha "b5cac66"}}
  :aliases
  {:conf-service {:main-opts ["-m" "conf-service.core"]}
   :build        {:deps        {io.github.clojure/tools.build {:git/tag "v0.8.1"
