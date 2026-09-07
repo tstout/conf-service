@@ -62,9 +62,9 @@
             (fn [req]
               (let [{:keys [method body]} req]
                 (case method
-                  "GET" (account-get req)
-                  "POST" (do #_(tap-step :account-post req)
-                             (-> req account-post)))))
+                  :get  (account-get req)
+                  :post (do #_(tap-step :account-post req)
+                         (-> req account-post)))))
             "v1/config/account/{acct-name}")
     (server :start)
     {:http-server server}))

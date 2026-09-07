@@ -1,5 +1,8 @@
 {:deps  {com.github.tstout/http-jdk
-         {:local/root "../http-jdk"}
+         ;;{:local/root "../http-jdk"}
+         {:git/url "https://github.com/tstout/http-jdk"
+          :git/tag "0.0.1"
+          :git/sha "44ab48a"}
          com.github.tstout/sys-loader
         ;;{:local/root "../sys-loader"} 
          {:git/url "https://github.com/tstout/sys-loader"
