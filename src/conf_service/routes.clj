@@ -1,8 +1,6 @@
 (ns conf-service.routes
-  (:require [clojure.string :refer [split starts-with?]]
-            [clojure.tools.logging :as log]
-            [sys-loader.bootstrap :refer [sys-state]]
-            [clojure.java.io :as io]
+  (:require [clojure.tools.logging :as log]
+            [sys-loader.bootstrap :refer [sys-state]] 
             [clojure.edn :as edn]
             [http-jdk.server :refer [mk-http-server]]
             [http-jdk.response :refer [created]] 
@@ -33,6 +31,7 @@
       {:status 200
        :body   (str account)
        :headers ""})))
+
 ;; TODO define created response and process headers
 (defn account-post [req]
   (let [{:keys [body]} req
@@ -48,15 +47,11 @@
        :body    (str account)
        :headers ""})))
 
-(defn config-routes []
-  #_(register-uri-handler (fn [uri]
-                          (let [path "/v1/config/account"]
-                            (when (starts-with? uri path)
-                              path))))
+(defn config-routes [] 
   (let [server (mk-http-server 
-                :port 8081 
+                :port 8080
                 :host "0.0.0.0")]
-    ;; add routes
+    (log/info "route added GET/POST /v1/config/account/{acct-name}")
     (server :add-route 
             "/v1/config/account"
             (fn [req]
@@ -70,27 +65,10 @@
     {:http-server server}))
 
 (comment
-  *e 
-  @sys-state
-  
-  (keyword "GET")
-
-  @data-source
-  data-source
-  
-  ;;(not-found nil)
-
-  (-> "{:a 1 :b 2}"
-      char-array
-      io/reader
-      slurp
-      edn/read-string)
-
-  (time (-> "{:a 1 :b 2}"
-            char-array
-            io/reader
-            slurp
-            edn/read-string))
-
+  *e
+  @sys-state 
+  (-> @sys-state :sys/http-server :http-server :port)
+  (-> @sys-state :sys/http-server :http-server :host)
+  (-> @sys-state :sys/http-server :http-server :server)
   ;;
   )
