@@ -15,7 +15,7 @@ clojure -M:conf-service fetch --decrypt --path gmail-tstout --url http://stout-p
 
 ```
 
-## Prerequesites:
+## Prerequisites:
 This currently has a dependency on [sysloader](https://github.com/tstout/sys-loader) which requires a prepare step:
 ```bash
  clojure -X:deps prep

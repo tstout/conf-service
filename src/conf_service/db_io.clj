@@ -92,7 +92,8 @@
 
 (defn new-named-account
   "Create a new account with an associated name entry defining a 
-   path which can be used to lookup the account."
+   path which can be used to lookup the account.
+   Returns the id of the new account."
   [opts]
   (let [account-id (new-account opts)]
     (insert-name (assoc opts :id account-id))
@@ -100,7 +101,8 @@
 
 
 (comment
-  *e
+  *e 
+  
   (require '[sys-loader.core :refer [sys-state]])
   (def data-source (-> @sys-state :sys/db :data-source))
 
