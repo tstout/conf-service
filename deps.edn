@@ -6,8 +6,8 @@
          com.github.tstout/sys-loader
         ;;{:local/root "../sys-loader"} 
          {:git/url "https://github.com/tstout/sys-loader"
-          :git/tag "v1.1.11"
-          :git/sha "5498a2c"}
+          :git/tag "v1.1.13"
+          :git/sha "fc309db"}
          com.github.seancorfield/next.jdbc
          {:git/url "https://github.com/seancorfield/next-jdbc.git"
           :git/tag "v1.2.724"
