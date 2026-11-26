@@ -21,8 +21,7 @@
          org.clojure/tools.logging
          {:mvn/version "1.2.4"}
          com.github.tstout/conceal
-         {;;:git/url "https://github.com/tstout/conceal"
-          :git/tag "v2.0.0"
+         {:git/tag "v2.0.0"
           :git/sha "411d5f6"}
          #_com.fzakaria/slf4j-timbre
          #_{:git/url "https://github.com/fzakaria/slf4j-timbre"
